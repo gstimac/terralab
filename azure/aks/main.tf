@@ -21,20 +21,21 @@ resource "azurerm_kubernetes_cluster" "aks" {
   tags                    = local.tags
 
   default_node_pool {
+    os_disk_size_gb     = "30"
+    os_disk_type        = "Managed"
     name                = "default"
     node_count          = var.node_count
     vm_size             = var.default_node_pool_vm_size
     vnet_subnet_id      = data.azurerm_subnet.sn.id
-    availability_zones  = var.availability_zones
     enable_auto_scaling = false
-//    min_count            = var.auto_scaling_min
-//    max_count            = var.auto_scaling_max
-    tags                = local.tags
+    //    min_count            = var.auto_scaling_min
+    //    max_count            = var.auto_scaling_max
+    tags = local.tags
   }
 
   network_profile {
     network_plugin    = "kubenet"
-    load_balancer_sku = "standard"
+    load_balancer_sku = "basic"
     outbound_type     = "loadBalancer"
   }
 
