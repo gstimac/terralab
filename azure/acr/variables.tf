@@ -13,10 +13,6 @@ variable "location" {
   })
 }
 
-variable "subscription_id" {
-  default = ""
-}
-
 variable "sku" {
   default = ""
 }
