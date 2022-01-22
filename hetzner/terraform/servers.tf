@@ -1,7 +1,7 @@
 resource "hcloud_server" "nextcloud" {
   name        = "fin-cx21c-nextcloud"
-  image       = "debian-11"
-  server_type = "cx21-ceph"
+  image       = "ubuntu-20.04"
+  server_type = "cx21"
   location    = "hel1"
   ssh_keys    = [hcloud_ssh_key.default.id]
   keep_disk   = true

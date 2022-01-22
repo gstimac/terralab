@@ -1,0 +1,6 @@
+- hosts: cx21
+  roles:
+    - geerlingguy.docker
+
+  vars:
+    docker_install_compose: true

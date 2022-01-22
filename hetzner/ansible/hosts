@@ -1,0 +1,2 @@
+[cx21]
+ip ansible_connection=ssh ansible_ssh_user=root
