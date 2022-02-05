@@ -1,0 +1,48 @@
+#We need this agent to keep the agent pool warm for KEDA
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ado-keda-dummy-deployment
+  labels:
+    app: ado-keda-dummy-agent
+spec:
+  replicas: 1 #here is the configuration for the actual agent always running
+  selector:
+    matchLabels:
+      app: ado-keda-dummy-agent
+  template:
+    metadata:
+      labels:
+        app: ado-keda-dummy-agent
+    spec:
+      containers:
+        - name: azdevops-agent-job
+          image: goranstimac/home:adoagent
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "128m"
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
+          env:
+            - name: AZP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: azdevops
+                  key: AZP_URL
+            - name: AZP_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: azdevops
+                  key: AZP_TOKEN
+            - name: AZP_POOL
+              valueFrom:
+                secretKeyRef:
+                  name: azdevops
+                  key: AZP_POOL
+      imagePullSecrets:
+        - name: regcred
+      nodeSelector:
+        application: utils
