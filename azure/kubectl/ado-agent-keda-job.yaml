@@ -44,6 +44,11 @@ spec:
           application: ADO
         imagePullSecrets:
           - name: regcred
+        tolerations:
+          - key: "kubernetes.azure.com/scalesetpriority"
+            operator: "Equal"
+            value: "spot"
+            effect: "NoSchedule"
   pollingInterval: 30
   successfulJobsHistoryLimit: 5
   failedJobsHistoryLimit: 5
