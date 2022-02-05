@@ -1,0 +1,63 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledJob
+metadata:
+  name: azdevops-scaledjob
+spec:
+  jobTargetRef:
+    template:
+      spec:
+        containers:
+          - name: azdevops-agent-job
+            image: goranstimac/home:adoagent
+            imagePullPolicy: Always
+            resources:
+              requests:
+                memory: "64Mi"
+                cpu: "250m"
+              limits:
+                memory: "512Mi"
+                cpu: "500m"
+            env:
+              - name: AZP_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: azdevops
+                    key: AZP_URL
+              - name: AZP_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: azdevops
+                    key: AZP_TOKEN
+              - name: AZP_POOL
+                valueFrom:
+                  secretKeyRef:
+                    name: azdevops
+                    key: AZP_POOL
+            volumeMounts:
+              - mountPath: /var/run/docker.sock
+                name: docker-volume
+        volumes:
+          - name: docker-volume
+            hostPath:
+              path: /var/run/docker.sock
+        nodeSelector:
+          application: ADO
+        imagePullSecrets:
+          - name: regcred
+        tolerations:
+          - key: "kubernetes.azure.com/scalesetpriority"
+            operator: "Equal"
+            value: "spot"
+            effect: "NoSchedule"
+  pollingInterval: 30
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 5
+  maxReplicaCount: 3
+  scalingStrategy:
+    strategy: "default"               
+  triggers:
+  - type: azure-pipelines
+    metadata:
+      poolID: "12"
+      organizationURLFromEnv: "AZP_URL"
+      personalAccessTokenFromEnv: "AZP_TOKEN"
