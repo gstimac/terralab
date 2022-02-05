@@ -1,13 +1,13 @@
 variable "ssh_public_key" {
-  default = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDrMETRo54vMRYEVBZudY+BFerwcGO8JhlCE3T5/072ky/RUul63FSeRXkg+RlY8acLdPUAZ2hbbe2Ayb5AayjKhiWHXMdMsZnkYnFqnxjpP46PoUUBKDhAcgnqKMdx0gjpCeGpOJMIQlsxFvvWG0w3PgUOZ+fSQXTOqI4RvYhRKCkg/FPPqqeyO9MSkp3l21LwJSQX65o1Liwxxn5RDgiZia9/5Y0eKymy10lw5/Mhyr5C7h6faD10G2uv6HL92jKtqlbG4U+kBz0XVVaNPoqu4/+IFmYfzQF48qfoJkCVTmZKPRNTPalAgm+y+/DlgVCG3XH2yRVj87PySvJO9eaEbSERzG8jk4dbJH96ncvypT1WaBATfQ5lLeYPhrwXe1jipObKhsf56LMIHz9X9LWgMTUWxmrx8G6r8pnA2tY+hKBard8Rw3ns3i7Yr9cV3GAqhjJDxDzLHSXmlWFFwwm4sp72572h5azlQpvipRQstlkbgpnOWc9HdwSjpRhm7rUStBe56W5PN+C589glTkzGdNaxsaBOacJxdSoyioqOEvPN1Hr8Kc4WHh6eZhymm4dPyWfJwoJQ3aar6oRLbDl2RRXUAh+7WMEmWumYYcYZP8t+ye54V0hoGYJGLGv8PC4wZt21WEaiPVJa78BQ1h7C7wIofvnPvofL3oMeY0TBIw== goran@localhost.localdomain"
+  default = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCswS+E1sd3b78oecd+rvlLAvxgKfyNd/a6vpU5iRzKj8Vpvmsu9L3V/O6AW6sBQTH2JHd0WHXNgVQx7anPgStu9BSuIOUtgeyic/buB/dxDex5iRXLB3mB72RhP/lu5PB//nl3TLwlXMIz8YZ9ABTsHAqfdFOcBizaLsxZMiYk27QJ1eiNn2nUOdD9DfmyqTBKgtzAkQw5ji5ylCOAjKi0/6fRYnMvDDqNt0gB1JuM1sDxptr/VsJNyIiBymg/di9RQET44G99ugKrQKfmuld++aBIn/DrMjW3l8SBphtIFoe0A8qK6YrGCScPMOcGOJazXmbFNKhbFeM59genmX6jZ9DzxI+19iSZM3nZSEWOiijhgqgz3tWCNtY2Hnd4W2Wf0TUPRXTnmJyFUwcImVLKY8q6DNNoSzqWMwzZsDp+8YmWSHBn2HwXdbm0JZ2RqRTqjJlYWVaB2W+7dYteo1HFz5fnVBFifiNtUtBBjp5sVLmCedI3dU+sl6Jac/cpZdX8R9ow4qlOUq5TruMNAhLLE2hihrb0GxxjJz+sH3HX/NIWY3jEPRdResyKjizQUBRIMp/o7JsaFhm+lzysfd+v3UiD9aPYvEEe6gtDab0Gnlw2KRFHgJeiuB38/ExGg0Ndxvkf5Q6+MOXVqKCzf0EelwwVNgh74Fal11a4Beru/Q== goran@DESKTOP-UFM55D3"
 }
 
 variable "cluster_name" {
-  default = ""
+  default = "lab"
 }
 
 variable "subscription" {
-  default = ""
+  default = "320c6aee-903c-465f-81d1-9463af62e06f"
 }
 
 variable "location" {
@@ -15,26 +15,26 @@ variable "location" {
     full  = string
     short = string
   })
-}
-
-variable "availability_zones" {
-  default = ["1"]
+  default = {
+    full  = "eastus"
+    short = "eus"
+  }
 }
 
 variable "owner" {
-  default = ""
+  default = "goran.stimac"
 }
 
 variable "vnet_name" {
-  default = ""
+  default = "main-eus-VNET"
 }
 
 variable "vnet_resource_group_name" {
-  default = ""
+  default = "main-eus-vnet-RG"
 }
 
 variable "subnet_name" {
-  default = ""
+  default = "cicd-SNET"
 }
 
 variable "acr_name" {
@@ -46,7 +46,7 @@ variable "acr_resource_group_name" {
 }
 
 variable "environment" {
-  default = ""
+  default = "dev"
 }
 
 variable "dns_prefix" {
@@ -54,19 +54,23 @@ variable "dns_prefix" {
 }
 
 variable "sku_tier" {
-  default = "Standard_B2s"
+  default = "Basic"
 }
 
 variable "default_node_pool_name" {
-  default = ""
+  default = "default"
 }
 
 variable "default_node_pool_vm_size" {
-  default = ""
+  default = "Standard_B2s"
 }
 
 variable "node_count" {
   default = 1
+}
+
+variable "enable_autoscaling" {
+  default = "true"
 }
 
 variable "auto_scaling_max" {
@@ -74,5 +78,5 @@ variable "auto_scaling_max" {
 }
 
 variable "auto_scaling_min" {
-  default = "1"
+  default = "0"
 }
