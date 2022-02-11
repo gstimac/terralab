@@ -80,3 +80,7 @@ variable "auto_scaling_max" {
 variable "auto_scaling_min" {
   default = "0"
 }
+
+variable "enable_spot" {
+  default = "false"
+}

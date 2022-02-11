@@ -9,7 +9,7 @@ spec:
   replicas: 1 #here is the configuration for the actual agent always running
   selector:
     matchLabels:
-      app: ado-keda-dummy-agent
+      app: ado
   template:
     metadata:
       labels:
@@ -45,4 +45,4 @@ spec:
       imagePullSecrets:
         - name: regcred
       nodeSelector:
-        application: utils
+        application: ADO
