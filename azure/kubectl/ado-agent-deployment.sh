@@ -15,8 +15,9 @@ kubectl create secret -n ado generic regcred \
 
 helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
-kubectl create namespace keda
-helm install keda kedacore/keda --namespace keda
+helm upgrade --install --namespace keda --create-namespace keda kedacore/keda --set prometheus.metricServer.enabled=true --set prometheus.operator.enabled=true --set watchNamespace=ado
 
 kubectl apply -f ado-agent-keda-dummy-agent.yaml -n ado
 kubectl apply -f ado-agent-keda-job.yaml -n ado
+
+#TODO https://github.com/kedacore/charts/blob/02d4688afe1cf15c122042a5597fc07aaf2f8715/keda/values.yaml#L115 expose to internal balancer k8s

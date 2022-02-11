@@ -27,7 +27,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     os_disk_size_gb     = "30"
     vnet_subnet_id      = data.azurerm_subnet.sn.id
     enable_auto_scaling = true
-    min_count           = var.auto_scaling_min
+    min_count           = 1
     max_count           = var.auto_scaling_max
     tags                = local.tags
     type                = "VirtualMachineScaleSets"
@@ -59,10 +59,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 }
 
-resource "azurerm_kubernetes_cluster_node_pool" "nodepool" {
+resource "azurerm_kubernetes_cluster_node_pool" "spot_nodepool" {
   name                  = "adospot"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
-  vm_size               = "Standard_D2a_v4"
+  vm_size               = "Standard_D2as_v4"
   node_count            = 0
   min_count             = 0
   max_count             = 3
@@ -78,6 +78,28 @@ resource "azurerm_kubernetes_cluster_node_pool" "nodepool" {
   }
   node_taints = [
     "kubernetes.azure.com/scalesetpriority=spot:NoSchedule"
+  ]
+
+  tags = local.tags
+}
+
+resource "azurerm_kubernetes_cluster_node_pool" "zrs_nodepool" {
+  name                  = "adozrs"
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
+  vm_size               = "Standard_D2as_v4"
+  node_count            = 0
+  min_count             = 0
+  max_count             = 3
+  enable_auto_scaling   = var.enable_autoscaling
+  os_disk_size_gb       = "30"
+  availability_zones    = ["1", "2"]
+
+  node_labels = {
+    "kubernetes.azure.com/scalesetpriority" = "zrs"
+    "application"                           = "ADO"
+  }
+  node_taints = [
+    "kubernetes.azure.com/scalesetpriority=zrs:NoSchedule"
   ]
 
   tags = local.tags
