@@ -1,0 +1,31 @@
+FROM ubuntu:20.04
+
+# To make it easier for build and release pipelines to run apt-get,
+# configure apt to not require confirmation (assume the -y argument by default)
+ENV DEBIAN_FRONTEND=noninteractive
+RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
+
+RUN apt update && apt install -y --no-install-recommends \
+    ca-certificates software-properties-common apt-transport-https lsb-release \
+    curl wget jq net-tools bind9-dnsutils iputils-ping git git-lfs \
+    libcurl4 libunwind8 \
+    default-jre default-jdk \
+    python3-pip libpython3-dev libjxr0 \
+    docker docker-compose \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb && \
+    dpkg -i packages-microsoft-prod.deb && \
+    apt update && apt install -y --no-install-recommends pwsh
+
+RUN curl -LsS https://aka.ms/InstallAzureCLIDeb | bash && rm -rf /var/lib/apt/lists/*
+
+# Can be 'linux-x64', 'linux-arm64', 'linux-arm', 'rhel.6-x64'.
+ENV TARGETARCH=linux-x64
+
+WORKDIR /azp
+
+COPY ./start.sh .
+RUN chmod +x start.sh
+
+ENTRYPOINT ["./start.sh"]
