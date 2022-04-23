@@ -16,7 +16,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   location            = azurerm_resource_group.aks.location
   resource_group_name = azurerm_resource_group.aks.name
   dns_prefix          = var.dns_prefix
-  #kubernetes_version      = "1.20.2"
+  kubernetes_version      = "1.23.5"
   private_cluster_enabled = false
   tags                    = local.tags
 
@@ -39,7 +39,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   network_profile {
     network_plugin    = "kubenet"
-    load_balancer_sku = "Standard"
+    load_balancer_sku = "Basic"
     outbound_type     = "loadBalancer"
   }
 
@@ -59,26 +59,26 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 }
 
-resource "azurerm_kubernetes_cluster_node_pool" "nodepool" {
-  name                  = "adospot"
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
-  vm_size               = "Standard_D2a_v4"
-  node_count            = 0
-  min_count             = 0
-  max_count             = 3
-  priority              = "Spot"
-  enable_auto_scaling   = var.enable_autoscaling
-  eviction_policy       = "Delete"
-  spot_max_price        = -1
-  os_disk_size_gb       = "30"
+# resource "azurerm_kubernetes_cluster_node_pool" "nodepool" {
+#   name                  = "adospot"
+#   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
+#   vm_size               = "Standard_D2a_v4"
+#   node_count            = 1
+#   min_count             = 0
+#   max_count             = 3
+#   priority              = "Spot"
+#   enable_auto_scaling   = var.enable_autoscaling
+#   eviction_policy       = "Delete"
+#   spot_max_price        = -1
+#   os_disk_size_gb       = "30"
 
-  node_labels = {
-    "kubernetes.azure.com/scalesetpriority" = "spot"
-    "application"                           = "ADO"
-  }
-  node_taints = [
-    "kubernetes.azure.com/scalesetpriority=spot:NoSchedule"
-  ]
+#   node_labels = {
+#     "kubernetes.azure.com/scalesetpriority" = "spot"
+#     "application"                           = "ADO"
+#   }
+#   node_taints = [
+#     "kubernetes.azure.com/scalesetpriority=spot:NoSchedule"
+#   ]
 
-  tags = local.tags
-}
+#   tags = local.tags
+# }
