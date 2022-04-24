@@ -87,8 +87,8 @@ trap 'cleanup; exit 0' EXIT
 trap 'cleanup; exit 130' INT
 trap 'cleanup; exit 143' TERM
 
-chmod +x ./run-docker.sh
+chmod +x ./run.sh
 
 # To be aware of TERM and INT signals call run.sh
 # Running it with the --once flag at the end will shut down the agent after the build is executed
-./run-docker.sh "$@" & wait $! --once
+./run.sh "$@" & wait $! --once

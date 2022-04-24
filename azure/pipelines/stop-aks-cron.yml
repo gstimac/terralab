@@ -1,0 +1,29 @@
+trigger: none
+pr: none
+schedules:
+  - cron: "05 23 * * *"
+    displayName: Stop AKS daily
+    branches:
+      include:
+        - main
+
+variables:
+- group: homelab-aks
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+  - job: stop_aks_cluster
+    steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'main-lab(320c6aee-903c-465f-81d1-9463af62e06f)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          echo "Fetching AKS credentials"
+          az aks get-credentials --resource-group $(AKS_RG) --name $(AKS_name) --overwrite-existing --admin
+          echo "Stopping AKS cluster"
+          az aks stop --resource-group $(AKS_RG) --name $(AKS_name)
+        failOnStandardError: false

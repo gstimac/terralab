@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ado-keda-dummy-deployment
+  name: ado-keda-dummy-deployment-large
   labels:
-    app: ado-keda-dummy-agent
+    app: ado-keda-dummy-agent-large
 spec:
   replicas: 1 #here is the configuration for the actual agent always running
   selector:
     matchLabels:
-      app: ado-keda-dummy-agent
+      app: ado-keda-dummy-agent-large
   template:
     metadata:
       labels:
-        app: ado-keda-dummy-agent
+        app: ado-keda-dummy-agent-large
     spec:
       containers:
-        - name: azdevops-agent-job
+        - name: azdevops-agent-job-large
           image: goranstimac/azure-devops-agent:basic
           imagePullPolicy: IfNotPresent
           resources:
@@ -30,17 +30,17 @@ spec:
             - name: AZP_URL
               valueFrom:
                 secretKeyRef:
-                  name: azdevops
+                  name: azdevops-large
                   key: AZP_URL
             - name: AZP_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: azdevops
+                  name: azdevops-large
                   key: AZP_TOKEN
             - name: AZP_POOL
               valueFrom:
                 secretKeyRef:
-                  name: azdevops
+                  name: azdevops-large
                   key: AZP_POOL
       # imagePullSecrets:
       #   - name: regcred

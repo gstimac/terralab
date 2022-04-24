@@ -33,7 +33,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     type                = "VirtualMachineScaleSets"
 
     node_labels = {
-      "application" = "utils"
+      "application" = "ADO"
     }
   }
 

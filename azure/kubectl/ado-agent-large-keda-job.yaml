@@ -1,7 +1,7 @@
 apiVersion: keda.sh/v1alpha1
 kind: ScaledJob
 metadata:
-  name: azdevops-scaledjob-small
+  name: azdevops-scaledjob-large
 spec:
   jobTargetRef:
     template:
@@ -9,7 +9,7 @@ spec:
         activeDeadlineSeconds: "86400"
         ttlSecondsAfterFinished: "3600"
         containers:
-          - name: azdevops-agent-job
+          - name: azdevops-agent-job-large
             image: goranstimac/azure-devops-agent:basic
             imagePullPolicy: IfNotPresent
             resources:
@@ -17,23 +17,23 @@ spec:
                 memory: "64Mi"
                 cpu: "250m"
               limits:
-                memory: "512Mi"
-                cpu: "500m"
+                memory: "700Mi"
+                cpu: "300m"
             env:
               - name: AZP_URL
                 valueFrom:
                   secretKeyRef:
-                    name: azdevops
+                    name: azdevops-large
                     key: AZP_URL
               - name: AZP_TOKEN
                 valueFrom:
                   secretKeyRef:
-                    name: azdevops
+                    name: azdevops-large
                     key: AZP_TOKEN
               - name: AZP_POOL
                 valueFrom:
                   secretKeyRef:
-                    name: azdevops
+                    name: azdevops-large
                     key: AZP_POOL
         #     volumeMounts:
         #       - mountPath: /var/run/docker.sock
@@ -60,6 +60,6 @@ spec:
   triggers:
   - type: azure-pipelines
     metadata:
-      poolID: "13"
+      poolID: "14"
       organizationURLFromEnv: "AZP_URL"
       personalAccessTokenFromEnv: "AZP_TOKEN"

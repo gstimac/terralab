@@ -1,0 +1,38 @@
+trigger: none
+pr: none
+
+parameters:
+  - name: parallel
+    default: true
+    type: boolean
+  - name: agentPool
+    default: ADO-Keda-agents-large
+    displayName: Agent pool
+    values:
+      - ADO-Keda-agents
+      - ADO-Keda-agents-large
+
+jobs:
+  - job: first_waiting_job
+    pool:
+      name: ${{ parameters.agentPool }}
+    steps:
+    - script: env; echo Hello, world job 1!; sleep 120;
+      displayName: 'Run a one-line script 1'
+      
+  - job: second_waiting_job
+    condition: eq('${{ parameters.parallel }}', 'true')
+    pool:
+      name: ${{ parameters.agentPool }}
+    steps:
+    - script: echo Hello, world job 2!; sleep 120;
+      displayName: 'Run a one-line script 2'
+      
+  - job: third_waiting_job
+    condition: eq('${{ parameters.parallel }}', 'true')
+    pool:
+      name: ${{ parameters.agentPool }}
+    steps:
+    - script: echo Hello, world job 3!; sleep 120;
+      displayName: 'Run a one-line script 3'
+
