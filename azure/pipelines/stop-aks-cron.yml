@@ -1,13 +1,13 @@
 trigger: none
 pr: none
 schedules:
-  - cron: "05 23 * * *"
+  - cron: "0 0 * * *"
     displayName: Stop AKS daily
     branches:
       include:
         - main
     always: true
-    
+
 variables:
 - group: homelab-aks
 
