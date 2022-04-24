@@ -6,8 +6,8 @@ spec:
   jobTargetRef:
     template:
       spec:
-        activeDeadlineSeconds: "86400"
-        ttlSecondsAfterFinished: "3600"
+        activeDeadlineSeconds: 86400
+        #ttlSecondsAfterFinished: 3600
         containers:
           - name: azdevops-agent-job-large
             image: goranstimac/azure-devops-agent:basic
@@ -16,9 +16,11 @@ spec:
               requests:
                 memory: "64Mi"
                 cpu: "250m"
+                ephemeral-storage: "5Gi"
               limits:
                 memory: "700Mi"
                 cpu: "300m"
+                ephemeral-storage: "10Gi"
             env:
               - name: AZP_URL
                 valueFrom:

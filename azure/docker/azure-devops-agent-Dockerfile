@@ -21,4 +21,5 @@ WORKDIR /azp
 COPY ./start.sh .
 RUN chmod +x start.sh
 
+#once flag has to be passed through the entrypoint, ignored in start.sh script
 ENTRYPOINT ["./start.sh", "--once"]
