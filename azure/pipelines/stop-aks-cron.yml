@@ -5,7 +5,7 @@ schedules:
   displayName: Stop AKS daily
   branches:
     include:
-      - main
+    - main
   always: true
 
 variables:
