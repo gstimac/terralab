@@ -1,11 +1,13 @@
 trigger: none
 pr: none
+
 schedules:
-- cron: "0 0 * * *"
-  displayName: Stop AKS daily
+- cron: "5 0 * * *"
+  displayName: Stop-AKS
   branches:
     include:
     - main
+    - master
   always: true
 
 variables:
