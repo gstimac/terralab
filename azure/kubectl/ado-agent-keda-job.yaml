@@ -42,10 +42,10 @@ spec:
                 name: var-lib-docker
               - mountPath: /var/lib/docker
                 name: var-lib-docker                
-        volumes:
-          - name: docker-volume
-            hostPath:
-              path: /var/run/docker.sock
+        # volumes:
+        #   - name: docker-volume
+        #     hostPath:
+        #       path: /var/run/docker.sock
         nodeSelector:
           application: ADO
         # imagePullSecrets:

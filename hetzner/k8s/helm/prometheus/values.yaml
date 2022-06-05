@@ -1,0 +1,120 @@
+rbac:
+  create: true
+
+podSecurityPolicy:
+  enabled: false
+
+serviceAccounts:
+  alertmanager:
+    create: false
+  nodeExporter:
+    create: true
+  pushgateway:
+    create: false
+  server:
+    create: true
+
+alertmanager:
+  enabled: false
+
+kubeStateMetrics:
+  enabled: true
+
+nodeExporter:
+  enabled: true
+  tolerations:
+    - key: "node-role.kubernetes.io/controlplane"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"
+    - key: "node-role.kubernetes.io/etcd"
+      operator: "Equal"
+      value: "true"
+      effect: "NoExecute"
+  hostNetwork: false
+
+pushgateway:
+  enabled: false
+
+server:
+  enabled: true
+  name: server
+
+  ## The URL prefix at which the container can be accessed. Useful in the case the '-web.external-url' includes a slug
+  ## so that the various internal URLs are still able to access as they are in the default case.
+  ## (Optional)
+  prefixURL: ""
+
+  ## External URL which can access prometheus
+  ## Maybe same with Ingress host name
+  baseURL: ""
+
+  configPath: /etc/config/prometheus.yml
+
+  global:
+    scrape_interval: 10s
+    scrape_timeout: 10s
+    evaluation_interval: 1m
+
+  ingress:
+    enabled: true
+    hosts:
+      - prometheus.gshl.xyz
+    path: /
+    pathType: Prefix
+
+  nodeSelector: {}
+  affinity: {}
+  podDisruptionBudget:
+    enabled: false
+    maxUnavailable: 1
+
+  persistentVolume:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+
+    mountPath: /data
+    size: 10Gi
+
+  podAnnotations: {}
+  podLabels: {}
+
+  alertmanagers: []
+  replicaCount: 1
+
+  deploymentAnnotations: {}
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+    requests:
+      cpu: 300m
+      memory: 512Mi
+
+  service:
+    enabled: true
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
+    ## List of IP addresses at which the Prometheus server service is available
+    ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
+    ##
+    externalIPs: []
+
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    servicePort: 80
+    sessionAffinity: None
+    type: ClusterIP
+
+
+  terminationGracePeriodSeconds: 300
+  ## Prometheus data retention period (default if not specified is 15 days)
+  ##
+  retention: "15d"
+
+
+
+
