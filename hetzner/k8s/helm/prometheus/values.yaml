@@ -55,6 +55,12 @@ server:
     scrape_interval: 10s
     scrape_timeout: 10s
     evaluation_interval: 1m
+ 
+  remoteWrite: 
+    - url: https://prometheus-prod-01-eu-west-0.grafana.net/api/prom/push
+      basic_auth:
+        username: !<grafana_cloud_username>!
+        password: !<grafana_cloud_token>!
 
   ingress:
     enabled: true
